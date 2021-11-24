@@ -3,4 +3,4 @@ Firebase Demo.xcodeproj/project.pbxproj
 Firebase Demo.xcodeproj/xcuserdata/shepherd.xcuserdatad/xcschemes/xcschememanagement.plist
 Pods/
 Firebase\ Demo.xcodeproj/project.pbxproj
-
+*.xcodeproj*
