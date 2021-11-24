@@ -38,4 +38,43 @@ see all of the available [locations here](https://cloud.google.com/firestore/doc
 
 If you want a database, which goes global, then you should check out [FaunaDB](www.fauna.com).
 
-
+## Database Interaction
+We create an instance of the Firebase database within our project. This instance automatically uses our
+GoogleService-Info.plist file in order to authenticate with our Firebase app. We must initialize this 
+database in the init method for our app.
+```
+    init() {
+        FirebaseApp.configure()
+        
+        // Create documents below
+        makeReservation()
+    }
+    
+    func makeReservation() {
+        
+        // Reference the Cloud Firestore database
+        let db = Firestore.firestore()
+        
+        // Access the reservations collection, or creates it, if not already created
+        let reservations = db.collection("reservations")
+        
+        // Create a document with a given identifier
+        reservations.document("test123").setData([
+            "name": "Carol",
+            "people": 22
+        ])
+        
+        // Create document with a unique identifier
+        reservations.document().setData(["name" : "Tom"])
+        
+        // Create document with given data, then assign it to a constant
+        let document = reservations.addDocument(data: [
+            "name": "Sue",
+            "people": 10
+        ])
+        
+        // Work with the document
+        
+        
+    }
+```
