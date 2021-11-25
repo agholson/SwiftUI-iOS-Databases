@@ -23,27 +23,45 @@ struct Firebase_DemoApp: App {
         // Reference the Cloud Firestore database
         let db = Firestore.firestore()
         
-        // Access the reservations collection, or creates it, if not already created
-        let reservations = db.collection("reservations")
+        // Reference our games collection
+        let gamesCollection = db.collection("games")
         
-        // Create a document with a given identifier
-        reservations.document("test123").setData([
-            "name": "Carol",
-            "people": 22
-        ])
+        // Udpate one of the documents
+        gamesCollection.document("Super Mario World").setData([
+            "platform": "SNES",
+            "rating": "E",
+            "year": "1990"
+        ], merge: true
+        )
         
-        // Create document with a unique identifier
-        reservations.document().setData(["name" : "Tom"])
+        let snes = db.collection("consoles").document("snes")
         
-        // Create document with given data, then assign it to a constant
-        let document = reservations.addDocument(data: [
-            "name": "Sue",
-            "people": 10
-        ])
+        snes.updateData(["name": "Super NES", "units": "49 million"])
         
-        // Work with the document
+        // Reference our document
+//        let reservation = db.collection("reservations").document("test123")
         
+        // Modify only the people field with the following flag
+//        reservation.setData(
+//            ["people": 24],
+//            merge: true
+//        )
         
+//        reservation.updateData(["people": 25])
+        
+//        let reservationsCollection = db.collection("reservations")
+//
+//        // Add data with auto-generated ID
+//        reservationsCollection.addDocument(data: [
+//            "name": "Peter",
+//            "people": 3
+//        ])
+//
+//        // Add data with chosen ID
+//        reservationsCollection.document("vip1").setData([
+//            "name": "Sam",
+//            "people" : 2
+//        ])
     }
     
     var body: some Scene {

@@ -78,3 +78,16 @@ database in the init method for our app.
         
     }
 ```
+
+Access a single document in a single collection:
+```
+// db.collection("<collectionName>").document("<documentId")
+let reservation = db.collection("reservations").document("test123")
+```
+
+Update a document without overwriting the rest of its keys. Note that if the key does not exist, then it
+will create a new one.
+```
+// reservation.updateData("<key>": <value>)
+reservation.updateData("people": 15)
+```
