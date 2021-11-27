@@ -120,3 +120,60 @@ reservationsCollection.addDocument(data: [:]) { error in
     }
 }
 ```
+
+## Reading Data
+You can get the data for a single document in the following manner.
+```
+// Get the data for a single document
+document.getDocument { docSnapshot, error  in
+    
+    // Check for an error and handle it
+    if let error = error {
+        print(error.localizedDescription)
+    }
+    // Check if we received data
+    else if let docSnapshot = docSnapshot {
+        // Print the JSON data
+        print(docSnapshot.data())
+        
+        // Print the doucment ID
+        print(docSnapshot.documentID)
+        
+    }
+    // Else it means no error occurred, but no data was returned
+    else {
+        
+    }
+}
+```
+
+### Reading all Documents in Collection
+It is possible to download all of the documents in one go. Or, you can listen for changes to specific 
+documents, then update those accordingly.
+
+```
+// Get all documents from a collection
+reservationsCollection.getDocuments { querySnapshot, error in
+    
+    // Check for an error and handle it
+    if let error = error {
+        // Handle the error
+    }
+    // Else we see if we could get a querySnapshot
+    else if let querySnapshot = querySnapshot {
+        
+        // Parse the returned documents
+        for doc in querySnapshot.documents {
+            // Print all the document IDs
+            print(doc.documentID)
+        }
+        
+    }
+    // Else no data was returned
+    else {
+
+    }
+    
+}
+```
+

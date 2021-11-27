@@ -25,35 +25,84 @@ struct Firebase_DemoApp: App {
         
         let reservationsCollection = db.collection("reservations")
         
-        let reservation = reservationsCollection.addDocument(data: ["name": "Steve", "people": 4 ])
-        reservationsCollection.addDocument(data: ["name": "Cathy", "people": 8])
+        // Get a document reference
+        let document = reservationsCollection.document("test123")
         
-        // Delete a field from a document
-        reservation.updateData(["people": FieldValue.delete()])
-        
-        // Delete a document
-        reservation.delete()
-        
-        // Error Handling
-        reservationsCollection.addDocument(data: [:]) { error in
-            // Check if there was an error
-            if let error = error { // Only exists, if error exists
+        // Get the data for a single document
+        document.getDocument { docSnapshot, error  in
+            
+            // Check for an error and handle it
+            if let error = error {
                 print(error.localizedDescription)
             }
-            // Call succeeded
+            // Check if we received data
+            else if let docSnapshot = docSnapshot {
+                // Print the JSON data
+                print(docSnapshot.data())
+                
+                // Print the doucment ID
+                print(docSnapshot.documentID)
+                
+            }
+            // Else it means no error occurred, but no data was returned
             else {
-                return  
+                
             }
         }
         
+        // Get all documents from a collection
+        reservationsCollection.getDocuments { querySnapshot, error in
+            
+            // Check for an error and handle it
+            if let error = error {
+                // Handle the error
+            }
+            // Else we see if we could get a querySnapshot
+            else if let querySnapshot = querySnapshot {
+                
+                // Parse the returned documents
+                for doc in querySnapshot.documents {
+                    // Print all the document IDs
+                    print(doc.documentID)
+                }
+                
+            }
+            // Else no data was returned
+            else {
+
+            }
+            
+        }
+        
+//        let reservation = reservationsCollection.addDocument(data: ["name": "Steve", "people": 4 ])
+//        reservationsCollection.addDocument(data: ["name": "Cathy", "people": 8])
+//
+//        // Delete a field from a document
+//        reservation.updateData(["people": FieldValue.delete()])
+//
+//        // Delete a document
+//        reservation.delete()
+        
+        // Error Handling
+//        reservationsCollection.addDocument(data: [:]) { error in
+//            // Check if there was an error
+//            if let error = error { // Only exists, if error exists
+//                print(error.localizedDescription)
+//            }
+//            // Call succeeded
+//            else {
+//                return
+//            }
+//        }
+        
         // Delete the genre/ platformer key pair
-        let superMarioDocument = db.collection("games").document("Super Mario World")
-        
-        superMarioDocument.updateData(["genre": FieldValue.delete()])
-        
-        let snesDocument = db.collection("consoles").document("snes")
-        
-        snesDocument.delete()
+//        let superMarioDocument = db.collection("games").document("Super Mario World")
+//
+//        superMarioDocument.updateData(["genre": FieldValue.delete()])
+//
+//        let snesDocument = db.collection("consoles").document("snes")
+//
+//        snesDocument.delete()
         
         // Reference our games collection
 //        let gamesCollection = db.collection("games")
