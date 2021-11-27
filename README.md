@@ -1,5 +1,6 @@
 # Firebase SwiftUIDemo app
-This app demonstrates how to use Firebase in a SwiftUI iOS app.
+This app demonstrates how to use Firebase in a SwiftUI iOS app. It is based on the excellent [Code with Chris](https://codewithchris.com) 
+iOS Databases module 1 course.
 
 # Firebase Setup
 1) Go to firebase.com
@@ -215,3 +216,42 @@ let listner2 = reservationsCollection.addSnapshotListener { querySnapshot, error
 }
 ```
 
+### Queries
+Queries are powerful pieces of code, which allow us to tell the database what data we want back. Instead, of receiving all of the documents
+in a collection, we can tell it to only send back documents with "Carol" in the "name" key, or converserly documents that do not contain 
+Carol in the name.
+
+Query to return only documents with "Dave" or "Carol" in the name field:
+```
+let query = reservationsCollection.whereField("name", in: ["Dave", "Carol"])
+``` 
+
+Then, you need to execute this query in order to get results:
+```
+// Execute the query
+query.getDocuments { querySnapshot, error in
+    // Make sure no errors, and the query contains data
+    if error == nil && querySnapshot != nil {
+        // Loop through the documents in the returned query
+        for doc in querySnapshot!.documents {
+            print(doc.data())
+        }
+    }
+}
+```
+
+We could also create a query to not get documents with two names in them, using `notIn`:
+```
+reservationsCollection.whereField("name", notIn: ["Dave", "Carol"])
+```
+
+You can also create a query, which will return documents with an array key, where it matches any of the values you desire:
+```
+// Check if a key with a list of values contains a specific value
+reservationsCollection.whereField("reservationList", arrayContains: 1)
+``` 
+
+Or an array that contains any of the list of values:
+```
+reservationsCollection.whereField("reservationsList", arrayContainsAny: [1, 2, 3])
+```
