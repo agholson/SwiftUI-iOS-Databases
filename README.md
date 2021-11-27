@@ -216,7 +216,7 @@ let listner2 = reservationsCollection.addSnapshotListener { querySnapshot, error
 }
 ```
 
-### Queries
+## Queries
 Queries are powerful pieces of code, which allow us to tell the database what data we want back. Instead, of receiving all of the documents
 in a collection, we can tell it to only send back documents with "Carol" in the "name" key, or converserly documents that do not contain 
 Carol in the name.
@@ -255,3 +255,22 @@ Or an array that contains any of the list of values:
 ```
 reservationsCollection.whereField("reservationsList", arrayContainsAny: [1, 2, 3])
 ```
+
+### Composite Queries
+When you want to match two criteria from your documents in a single query, you make a composite query. For example, if we wanted only 
+reservations made this week, along with the names of the people that made them, we would use a composite query. 
+
+This query on the backend requires a composite index. This index is computationally expensive, because it requires Firebase to make brand new
+ tables linking the fields selected. Therefore, it limits you to 200 composite indexes in your app.
+ 
+ How to make composite queries:
+ ```
+// Get all reservations made by Dave or Sue with less than 20 people
+let query = reservations
+    .whereField("name", in: ["Dave", "Sue"])
+    .whereField("people", isLessThan: 20)
+ ``` 
+
+You then, need to execute the query, and catch its error. Because we have not created a corresponding composite index for this query, it
+will cause an error. Use the link in the console from the error in order to quickly create the needed composite index.
+

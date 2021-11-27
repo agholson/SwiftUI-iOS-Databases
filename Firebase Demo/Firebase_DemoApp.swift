@@ -18,7 +18,34 @@ struct Firebase_DemoApp: App {
 //        makeReservation()
         
         // Used for challenges
-        challenge11Part3()
+        lesson12()
+    }
+    
+    func lesson12() {
+        
+        let db = Firestore.firestore()
+        
+        let reservations = db.collection("reservations")
+        
+        // Get all reservations made by Dave or Sue with less than 20 people
+        let query = reservations
+            .whereField("name", in: ["Dave", "Sue"])
+            .whereField("people", isLessThan: 20)
+        
+        // Execute the query
+        query.getDocuments { querySnapshot, error in
+            
+            if let error = error {
+                print("Error occurred line 39: \(error.localizedDescription)")
+            }
+            else if let querySnapshot = querySnapshot {
+                // Loop through all the documents
+                for doc in querySnapshot.documents {
+                    print(doc.data())
+                }
+            }
+            
+        }
     }
     
     func challenge11Part3() {
