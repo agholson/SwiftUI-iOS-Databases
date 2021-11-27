@@ -91,3 +91,32 @@ will create a new one.
 // reservation.updateData("<key>": <value>)
 reservation.updateData("people": 15)
 ```
+
+Delete a key from a document:
+```
+// Create the new doument
+let reservation = reservationsCollection.addDocument(data: ["name": "Steve", "people": 4 ])
+reservationsCollection.addDocument(data: ["name": "Cathy", "people": 8])
+
+// Delete a field from a document
+reservation.updateData(["people": FieldValue.delete()])
+
+// Delete a document
+reservation.delete()
+```
+
+## Error Handling
+For any call to the Firestore database, we can add a completion handler to take care of the error.
+
+```
+reservationsCollection.addDocument(data: [:]) { error in
+    // Check if there was an error
+    if let error = error { // Only exists, if error exists
+        print(error.localizedDescription)
+    }
+    // Call succeeded
+    else {
+        return
+    }
+}
+```

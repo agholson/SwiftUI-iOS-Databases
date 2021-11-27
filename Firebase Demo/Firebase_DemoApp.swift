@@ -23,20 +23,52 @@ struct Firebase_DemoApp: App {
         // Reference the Cloud Firestore database
         let db = Firestore.firestore()
         
+        let reservationsCollection = db.collection("reservations")
+        
+        let reservation = reservationsCollection.addDocument(data: ["name": "Steve", "people": 4 ])
+        reservationsCollection.addDocument(data: ["name": "Cathy", "people": 8])
+        
+        // Delete a field from a document
+        reservation.updateData(["people": FieldValue.delete()])
+        
+        // Delete a document
+        reservation.delete()
+        
+        // Error Handling
+        reservationsCollection.addDocument(data: [:]) { error in
+            // Check if there was an error
+            if let error = error { // Only exists, if error exists
+                print(error.localizedDescription)
+            }
+            // Call succeeded
+            else {
+                return  
+            }
+        }
+        
+        // Delete the genre/ platformer key pair
+        let superMarioDocument = db.collection("games").document("Super Mario World")
+        
+        superMarioDocument.updateData(["genre": FieldValue.delete()])
+        
+        let snesDocument = db.collection("consoles").document("snes")
+        
+        snesDocument.delete()
+        
         // Reference our games collection
-        let gamesCollection = db.collection("games")
+//        let gamesCollection = db.collection("games")
         
         // Udpate one of the documents
-        gamesCollection.document("Super Mario World").setData([
-            "platform": "SNES",
-            "rating": "E",
-            "year": "1990"
-        ], merge: true
-        )
-        
-        let snes = db.collection("consoles").document("snes")
-        
-        snes.updateData(["name": "Super NES", "units": "49 million"])
+//        gamesCollection.document("Super Mario World").setData([
+//            "platform": "SNES",
+//            "rating": "E",
+//            "year": "1990"
+//        ], merge: true
+//        )
+//
+//        let snes = db.collection("consoles").document("snes")
+//
+//        snes.updateData(["name": "Super NES", "units": "49 million"])
         
         // Reference our document
 //        let reservation = db.collection("reservations").document("test123")
@@ -49,7 +81,7 @@ struct Firebase_DemoApp: App {
         
 //        reservation.updateData(["people": 25])
         
-//        let reservationsCollection = db.collection("reservations")
+//
 //
 //        // Add data with auto-generated ID
 //        reservationsCollection.addDocument(data: [
