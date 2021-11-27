@@ -177,3 +177,41 @@ reservationsCollection.getDocuments { querySnapshot, error in
 }
 ```
 
+### Listening for Database Changes
+With Firebase, we can get notified, whenever there are changes to a particular document. We use a snapshot
+listener in order to accomplish this.
+
+```
+// Add a snapshot listener to this document
+let listener1 = document.addSnapshotListener { docSnapshot, error in
+    
+    // Check for any errors
+    if let error = error {
+        print("Error occurred on line 94: \(error)")
+    }
+    // Data receieved with every update to the document
+    print(docSnapshot?.data() ?? "")
+    
+}
+
+// MARK: Listen for any Changes to the Reservations Collection
+let listner2 = reservationsCollection.addSnapshotListener { querySnapshot, error in
+    
+    // Handle any errors
+    if let error = error {
+        
+    }
+    // Make sure we received the documents
+    else if let querySnapshot = querySnapshot {
+        // Loop through only the documents changed, since the last sync
+        for doc in querySnapshot.documentChanges {
+            // Print the data for each one
+            print(doc.document.data())
+            
+        }
+        
+    }
+    
+}
+```
+
