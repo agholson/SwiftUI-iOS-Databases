@@ -256,14 +256,14 @@ Or an array that contains any of the list of values:
 reservationsCollection.whereField("reservationsList", arrayContainsAny: [1, 2, 3])
 ```
 
-### Composite Queries
+### Compound Queries
 When you want to match two criteria from your documents in a single query, you make a composite query. For example, if we wanted only 
 reservations made this week, along with the names of the people that made them, we would use a composite query. 
 
 This query on the backend requires a composite index. This index is computationally expensive, because it requires Firebase to make brand new
  tables linking the fields selected. Therefore, it limits you to 200 composite indexes in your app.
  
- How to make composite queries:
+ How to make compound queries:
  ```
 // Get all reservations made by Dave or Sue with less than 20 people
 let query = reservations

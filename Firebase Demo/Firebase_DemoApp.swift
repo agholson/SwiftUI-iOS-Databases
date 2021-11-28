@@ -18,7 +18,94 @@ struct Firebase_DemoApp: App {
 //        makeReservation()
         
         // Used for challenges
-        lesson12()
+        lesson12Challenge()
+    }
+    
+    func lesson12Challenge() {
+        // MARK: L12 Challenge Pt. 1
+        let db = Firestore.firestore()
+        
+        let games = db.collection("games")
+        
+        let gamesQuery = games
+            .whereField("platform", in: ["Nintendo"])
+            .whereField("players", isGreaterThan: 100)
+        
+        // Execute the composite query
+        gamesQuery.getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Error on line 37: \(error)")
+            }
+            else if let querySnapshot = querySnapshot {
+                for doc in querySnapshot.documents {
+                    print(doc.data())
+                }
+            }
+            else {
+                print("No matches for the query line 45.")
+            }
+        }
+        
+        // MARK: L12 Challenge: Pt. 2
+        let lessThan100PlayersQuery = games
+            .whereField("players", isLessThan: 100)
+            .whereField("platform", in: ["Nintendo"])
+        
+        lessThan100PlayersQuery.getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Error line 56: \(error)")
+                
+            }
+            else if let querySnapshot = querySnapshot {
+                for doc in querySnapshot.documents {
+                    print(doc.data())
+                }
+            }
+            else {
+                print("Less than 100 players returned no results")
+            }
+        }
+        
+        // MARK: L12 Challenge - Pt. 3
+        let zeldaLargePlayersQuery = games
+            .whereField("name", in: ["Zelda"])
+            .whereField("players", isGreaterThan: 100)
+        
+        zeldaLargePlayersQuery.getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Error occurred line 76: \(error)")
+            }
+            else if let querySnapshot = querySnapshot {
+                for doc in querySnapshot.documents {
+                    print(doc.data())
+                }
+            }
+            else {
+                print("Line 84: query failed to return any documents")
+            }
+        }
+        
+    }
+    
+    // Set-up function to add games to our database for the lesson 12 challenge
+    func addGames() {
+        // Reference to the cloud firestore database
+        let db = Firestore.firestore()
+        
+        // Reference to the games collection
+        // Create the games collection if it doesn't already exist
+        let games = db.collection("games")
+        
+        // Create several documents with different values of number of levels
+        games.document("Zelda SNES").setData(["name": "Zelda", "platform": "SNES", "players": 250])
+        
+        games.document("Zelda").setData(["name": "Zelda", "platform": "Nintendo", "players": 90])
+        
+        games.document("DK").setData(["name": "Donkey Kong", "platform": "Nintendo", "players": 200])
+                
+        games.document("Mega Man").setData(["name": "Mega Man", "platform": "Nintendo", "players": 110])
+        
+        games.document("Baseball").setData(["name": "Baseball", "platform": "Nintendo", "players": 50])
     }
     
     func lesson12() {
